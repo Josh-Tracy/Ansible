@@ -110,27 +110,27 @@ Resources:
             KmsKeyId: !Ref EBSkey
 
   
-  #server1PrivateDNSRecord:
-  #  Type: AWS::Route53::RecordSet
-  #  Properties:
-  #    HostedZoneId: !Ref PrivateRoute53HostedZone
-  #    Comment: Private DNS entry for server1
-  #    Name: !Ref ServerName
-  #    Type: A
-  #    TTL: '900'
-  #    ResourceRecords:
-  #    - !GetAtt server1.PublicIp
+  server1PrivateDNSRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref PrivateRoute53HostedZone
+      Comment: Private DNS entry for server1
+      Name: !Ref ServerName
+      Type: A
+      TTL: '900'
+      ResourceRecords:
+      - !GetAtt server1.PrivateIp
   
-  #server2PrivateDNSRecord:
-  #  Type: AWS::Route53::RecordSet
-  #  Properties:
-  #    HostedZoneId: !Ref PrivateRoute53HostedZone
-  #    Comment: Private DNS entry for server2
-  #    Name: !Ref ServerName2
-  #    Type: A
-  #    TTL: '900'
-  #    ResourceRecords:
-  #    - !GetAtt server2.PublicIp
+  server2PrivateDNSRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref PrivateRoute53HostedZone
+      Comment: Private DNS entry for server2
+      Name: !Ref ServerName2
+      Type: A
+      TTL: '900'
+      ResourceRecords:
+      - !GetAtt server2.PrivateIp
 
   AnsibleSecurityGroup:
     Type: AWS::EC2::SecurityGroup

@@ -10,8 +10,8 @@ stack_name: "myservers"
 aws_key_name: "ansiblekey"
 
 #Establish server hostname
-server_name: "server01"
-server_name2: "server02"
+server_name: "server01.ansiblelab.com"
+server_name2: "server02.ansiblelab.com"
 
 #Type of AWS instance
 aws_instancetype: "t2.medium"
@@ -25,7 +25,7 @@ ebs_key: "ff01e1f8-edfa-44d6-b511-3fc07445765c"
 
 
 # Establish private Route53 DNS zone
-private_hosted_zone: Z0698601OIJ1IL8WB5EO
+private_hosted_zone: Z0426696BJSKNKQ4L8ET
 
 # Establish VPC
 vpc_id: vpc-088f9f20331a59216
