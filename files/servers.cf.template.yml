@@ -1,0 +1,165 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: "CloudFormation template to deploy multiple VPCs and associated networking components for GovCloud environment"
+
+Parameters:
+  Image:
+    Description: "EC2 ami to be used"
+    Type: "AWS::EC2::Image::Id"
+  KeyPairName:
+    Description: "SSH Key to asign to the EC2 instances"
+    Type: "AWS::EC2::KeyPair::KeyName"
+  InstanceType:
+    Default: "t3.medium"
+    Description: "The instance type to be used"
+    Type: "String"
+  EnvId:
+    Description: "Environment ID tag to use"
+    Type: "String"
+  RootVolumeName:
+    Description: "Device name of the root volume"
+    Type: "String"
+  RootVolumeType:
+    Description: "Device type of the root volume"
+    Type: "String"
+  RootVolumeSize:
+    Description: "Device size of the root volume"
+    Type: "String"
+  ServerDomain:
+    Description: "Domain of the server"
+    Type: "String"
+  ServerName:
+    Description: "Full name of the server"
+    Type: "String"
+  ServerName2:
+    Description: "Full name of the server"
+    Type: "String"
+  AwsZone:
+    Description: "AWS Availability Zone to deploy to"
+    Type: "AWS::EC2::AvailabilityZone::Name"
+  AwsZone2:
+    Description: "AWS Availability Zone to deploy to"
+    Type: "AWS::EC2::AvailabilityZone::Name"
+  EBSkey:
+    Description: "Key used to encrypt EBS volumes"
+    Type: "String"
+  Subnet:
+    Description: "Subnet instance will reside in"
+    Type: "AWS::EC2::Subnet::Id"
+  Subnet2:
+    Description: "Subnet instance will reside in"
+    Type: "AWS::EC2::Subnet::Id"
+  PrivateRoute53HostedZone:
+    Description: "Route53 hosted zone for private DNS"
+    Type: "AWS::Route53::HostedZone::Id"
+  VPC:
+    Description: "VPC of resource"
+    Type: "AWS::EC2::VPC::Id"
+  
+Resources:
+  server1:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      ImageId: !Ref Image
+      KeyName: !Ref KeyPairName
+      InstanceType: !Ref InstanceType
+      Tags:
+        - Key: 'Name'
+          Value: !Ref ServerName
+        - Key: 'env_id'
+          Value: !Ref EnvId
+      AvailabilityZone: !Ref AwsZone 
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          GroupSet: 
+            - !Ref AnsibleSecurityGroup
+          SubnetId: !Ref Subnet
+      BlockDeviceMappings:
+        - DeviceName: !Ref RootVolumeName
+          Ebs:
+            VolumeType: !Ref RootVolumeType 
+            DeleteOnTermination: "true"
+            VolumeSize: !Ref RootVolumeSize
+            Encrypted: "true"
+            KmsKeyId: !Ref EBSkey
+  server2:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      ImageId: !Ref Image
+      KeyName: !Ref KeyPairName
+      InstanceType: !Ref InstanceType
+      Tags:
+        - Key: 'Name'
+          Value: !Ref ServerName2
+        - Key: 'env_id'
+          Value: !Ref EnvId
+      AvailabilityZone: !Ref AwsZone2
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          GroupSet: 
+            - !Ref AnsibleSecurityGroup
+          SubnetId: !Ref Subnet2
+      BlockDeviceMappings:
+        - DeviceName: !Ref RootVolumeName
+          Ebs:
+            VolumeType: !Ref RootVolumeType 
+            DeleteOnTermination: "true"
+            VolumeSize: !Ref RootVolumeSize
+            Encrypted: "true"
+            KmsKeyId: !Ref EBSkey
+
+  
+  #server1PrivateDNSRecord:
+  #  Type: AWS::Route53::RecordSet
+  #  Properties:
+  #    HostedZoneId: !Ref PrivateRoute53HostedZone
+  #    Comment: Private DNS entry for server1
+  #    Name: !Ref ServerName
+  #    Type: A
+  #    TTL: '900'
+  #    ResourceRecords:
+  #    - !GetAtt server1.PublicIp
+  
+  #server2PrivateDNSRecord:
+  #  Type: AWS::Route53::RecordSet
+  #  Properties:
+  #    HostedZoneId: !Ref PrivateRoute53HostedZone
+  #    Comment: Private DNS entry for server2
+  #    Name: !Ref ServerName2
+  #    Type: A
+  #    TTL: '900'
+  #    ResourceRecords:
+  #    - !GetAtt server2.PublicIp
+
+  AnsibleSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Join [ "", [ !Ref EnvId, "-ansible-sg"] ]
+      GroupDescription: "Ansible demonstration SG - 22/SSH"
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '22'
+        ToPort: '22'
+        Description: Permit SSH
+        CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+      - IpProtocol: tcp
+        FromPort: '0'
+        ToPort: '65535'
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: icmp
+        FromPort: '8'
+        ToPort: '-1'
+        CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: "Name"
+          Value: !Join [ "", [ !Ref EnvId, "-ansible-sg"] ]
+        - Key: "env_id"
+          Value: !Ref EnvId
+
+        
+
+
+  

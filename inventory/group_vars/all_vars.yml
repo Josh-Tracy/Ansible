@@ -1,0 +1,38 @@
+---
+# Define hosting environment
+hosting_infrastructure: aws
+
+# Define AWS region. Only 2 exist in govcloud. Comment out the one you DO NOT wish to use with #
+aws_region: "us-east-1"
+#aws_region: "us-gov-west-1"
+
+# Define PaaS environment name
+env_id: "ansiblelab"
+
+# DNS domain
+dns_domain: "{{ env_id }}.com"
+
+# Define the AWS default image
+# FIPS ON AMI
+#aws_image: ami-052d221519ff450b1
+# FIPS OFF AMI
+aws_image: ami-000db10762d0c4c05
+
+# Set the SSH keypair with EC2 Instances
+aws_key_name: "ansible"
+
+# Availability zone of resources
+aws_zone: "us-east-1a"
+#aws_zone: "us-east-1b"
+#aws_zone: "us-east-1c"
+
+
+# Second AZ if multi-AZ is needed during cloudformation deployment
+#aws_zone2: "us-east-1a"
+aws_zone2: "us-east-1b"
+#aws_zone2: "us-east-1c"
+
+
+
+
+

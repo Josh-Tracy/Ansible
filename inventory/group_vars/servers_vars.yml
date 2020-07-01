@@ -1,0 +1,40 @@
+---
+
+#Override default image
+#aws_image: "{{ aws_image}}"
+
+# SSO  Cloud Formation Stack Name
+stack_name: "myservers"
+
+# SSH Keypair for the instance
+aws_key_name: "ansiblekey"
+
+#Establish server hostname
+server_name: "server01"
+server_name2: "server02"
+
+#Type of AWS instance
+aws_instancetype: "t2.medium"
+
+#Establish SSO server subnets
+subnet: subnet-09aaee8f8f762ea0c
+subnet2: subnet-0f583c67f9cee3a1e
+
+# Establish EBS Encryption key
+ebs_key: "ff01e1f8-edfa-44d6-b511-3fc07445765c"
+
+
+# Establish private Route53 DNS zone
+private_hosted_zone: Z0698601OIJ1IL8WB5EO
+
+# Establish VPC
+vpc_id: vpc-088f9f20331a59216
+
+#Disks to attach to instance
+disks:
+  - name: "root_volume"
+    type: "gp2"
+    size: "100"
+    device_name: "/dev/sda1"
+
+
