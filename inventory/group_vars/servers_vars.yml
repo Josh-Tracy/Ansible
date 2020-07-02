@@ -3,7 +3,7 @@
 #Override default image
 #aws_image: "{{ aws_image}}"
 
-# SSO  Cloud Formation Stack Name
+#   Cloud Formation Stack Name
 stack_name: "myservers"
 
 # SSH Keypair for the instance
@@ -16,7 +16,7 @@ server_name2: "server02.ansiblelab.com"
 #Type of AWS instance
 aws_instancetype: "t2.medium"
 
-#Establish SSO server subnets
+#Establish  server subnets
 subnet: subnet-09aaee8f8f762ea0c
 subnet2: subnet-0f583c67f9cee3a1e
 

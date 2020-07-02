@@ -2,20 +2,17 @@
 # Define hosting environment
 hosting_infrastructure: aws
 
-# Define AWS region. Only 2 exist in govcloud. Comment out the one you DO NOT wish to use with #
+# Define AWS region. Comment out the one you DO NOT wish to use with #
 aws_region: "us-east-1"
-#aws_region: "us-gov-west-1"
+#aws_region: "us-west-1"
 
-# Define PaaS environment name
+# Define environment name
 env_id: "ansiblelab"
 
 # DNS domain
 dns_domain: "{{ env_id }}.com"
 
 # Define the AWS default image
-# FIPS ON AMI
-#aws_image: ami-052d221519ff450b1
-# FIPS OFF AMI
 aws_image: ami-000db10762d0c4c05
 
 # Set the SSH keypair with EC2 Instances
