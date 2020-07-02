@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: "CloudFormation template to deploy multiple VPCs and associated networking components for GovCloud environment"
+Description: "CloudFormation template to deploy multiple servers in aws"
 
 Parameters:
   Image:
